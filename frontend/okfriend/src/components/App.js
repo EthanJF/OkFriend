@@ -1,14 +1,31 @@
-import React from 'react';
+import React, { Component } from 'react';
 import NavBar from './NavBar'
 import MainDiv from './MainDiv'
 
-function App() {
-  return (
-    <div>
-      <NavBar />
-      <MainDiv />
-    </div>
-  );
-}
+export default class App extends Component {
 
-export default App;
+  state = {
+    showProfile: false
+  }
+
+  handleProfileClick = () => {
+    this.setState({
+      showProfile: true
+    })
+  }
+
+  handleHomeClick = () => {
+    this.setState({
+      showProfile: false
+    })
+  }
+
+  render(){
+    return (
+      <div>
+        <NavBar showProfile={this.state.showProfile} handleProfileClick={this.handleProfileClick} handleHomeClick={this.handleHomeClick}/>
+        <MainDiv showProfile={this.state.showProfile} handleProfileClick={this.handleProfileClick}/>
+      </div>
+    )
+  }
+}

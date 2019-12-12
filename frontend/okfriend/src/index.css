@@ -1,12 +1,32 @@
-body {
-  margin: 0;
-}
-
 .logo {
   text-align: center;
   font-size: 3rem;
 }
 
-.main-div {
+.image-div {
+  padding: 2%;
+  float: left;
+}
+
+.detail-div {
+  margin-left: 5%;
+}
+
+.party-div {
+  float: clear;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-around;
+}
+
+.homepage {
   text-align: center;
+}
+
+.area-users, .interest-users {
+  display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(25vw, auto);
 }
