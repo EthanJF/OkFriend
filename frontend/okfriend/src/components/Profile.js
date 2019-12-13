@@ -7,6 +7,7 @@ export default class Profile extends Component {
     }
 
     componentDidMount() {
+        this.props.resetRedirect()
         fetch(`http://localhost:3000/users/${this.props.selectedUserID}`)
             .then(r => r.json())
             .then(resObj => {
@@ -22,7 +23,7 @@ export default class Profile extends Component {
         const userInterests = this.state.currentUserInterests
 
         const interests = userInterests.map((interest) => {
-            return <li>{interest.name}</li>
+            return <li key={interest.id}>{interest.name}</li>
         })
         return(
             <div>
