@@ -49,6 +49,7 @@ export default class Profile extends Component {
 
                     </ul>
                 </div>
+                <button onClick={this.props.deleteAUser}>Delete</button>
             </div>
         )
     }

@@ -8,6 +8,10 @@
   float: left;
 }
 
+.image-div img {
+  max-height: 50%;
+}
+
 .detail-div {
   margin-left: 5%;
 }
@@ -31,6 +35,10 @@
   grid-auto-rows: minmax(25vw, auto);
 }
 
+.area-users img, .interest-users img, .search-users img {
+  max-width: 40%;
+}
+
 .search-form input{
   width: 20px;
 }
@@ -42,4 +50,8 @@
 
 #submit {
   width: 50px;
+}
+
+.welcome {
+  text-align: center;
 }
