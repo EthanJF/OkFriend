@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, Redirect } from 'react-router-dom'
 
 export default class Login extends Component {
 
@@ -38,6 +38,7 @@ export default class Login extends Component {
                     })
                 } else {
                     this.props.setToken(resp)
+                   
                 }
             })
     }
@@ -63,9 +64,11 @@ export default class Login extends Component {
                     <label>Password: </label>
                     <input onChange={this.onChange} name="password" type="password" />
                     <br />
-                    <button onClick={this.submitClick}>{this.state.password === '' ? <NavLink to='/welcome'>Submit</NavLink> : <NavLink to='/home'>Submit</NavLink>}</button>
+                    <button onClick={this.submitClick}>Submit</button>
                 </form>
+                { this.props.token ? <Redirect to="/home"/> : <Redirect to="/welcome" />}
             </div>
+
         )
     }
 }

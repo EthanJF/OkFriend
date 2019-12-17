@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import Profile from './Profile'
+import EditProfile from './EditProfile'
+import MyProfile from './MyProfile'
+import UserProfile from './UserProfile'
 import HomePage from './HomePage'
 import Search from './Search'
 import NavBar from './NavBar'
@@ -11,7 +13,9 @@ export default class MainDiv extends Component {
         allUsers: [],
         selectedUserID: 46,
         redirect: false,
-        username: ""
+        username: "",
+        zip_code: 0,
+        interests: []
     }
 
     setID = (id) => {
@@ -31,22 +35,26 @@ export default class MainDiv extends Component {
         fetch("http://localhost:3000/users")
         .then(r => r.json())
         .then(resObj => {
-            console.log(resObj)
+            const myUsers = resObj.filter((user) => {
+                return user.id !== this.props.userID
+            })
             this.setState({
-                allUsers: resObj
+                allUsers: myUsers
             })
         })
         fetch(`http://localhost:3000/users/${this.props.userID}`)
         .then( r=> r.json())
         .then(resObj => {
             this.setState({
-                username: resObj.username
+                username: resObj.username,
+                zip_code: resObj.zip_code,
+                interests: resObj.interests
             })
         })
     }
 
     deleteAUser = () => {
-        fetch(`http://localhost:3000/users/${this.state.selectedUserID}`,{
+        fetch(`http://localhost:3000/users/${this.props.userID}`,{
             method: "DELETE"
         })
         .then( r => r.json())
@@ -56,21 +64,23 @@ export default class MainDiv extends Component {
             })
             this.setState({
                 allUsers: newUsers
-            }, () => <Redirect to="home"/>)
+            }, () => this.props.logOutClick())
         })
     }
 
     render(){
-        const { redirect } = this.state
         return(
             <div>
                 <NavBar showProfile={this.props.showProfile} handleProfileClick={this.props.handleProfileClick} handleHomeClick={this.props.handleHomeClick} onClick={this.props.logOutClick} username={this.state.username}/>
     
-                {redirect ? (<Redirect to="/home/profile"/>) : ""}
+                {this.state.redirect ? (<Redirect to="/home/user-profile"/>) : ""}
                 <Switch>
-                    <Route path="/home/profile" render={(props) => <Profile {...props} selectedUserID={this.state.selectedUserID} resetRedirect={this.resetRedirect} deleteAUser={this.deleteAUser}/>}/>
-                    <Route path="/home/search" render={(props) => <Search {...props} interests={this.props.interests} allUsers={this.state.allUsers} setID={this.setID}/>}/>
-                    <Route path="/home" render={(props) => <HomePage {...props} allUsers={this.state.allUsers} selectedUserID={this.state.selectedUserID} setID={this.setID} />}/>
+                    <Route strict path="/home/my-profile/edit" render={(props) => <EditProfile {...props} userID={this.props.userID}/>}/>
+                    <Route strict path="/home/my-profile" render={(props) => <MyProfile {...props} selectedUserID={this.state.selectedUserID} resetRedirect={this.resetRedirect} deleteAUser={this.deleteAUser} userID={this.props.userID} interests={this.props.interests}/>}/>
+                    <Route strict path="/home/user-profile" render={(props) => <UserProfile {...props} selectedUserID={this.state.selectedUserID} resetRedirect={this.resetRedirect} deleteAUser={this.deleteAUser} userID={this.props.userID}/>}/>
+                    <Route strict path="/home/search" render={(props) => <Search {...props} interests={this.props.interests} allUsers={this.state.allUsers} setID={this.setID}/>}/>
+                    <Route strict path="/home" render={(props) => <HomePage {...props} allUsers={this.state.allUsers} selectedUserID={this.state.selectedUserID} setID={this.setID} />}/>
+
                 </Switch>
             </div>
         )

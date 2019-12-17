@@ -1,7 +1,7 @@
 import React from 'react'
-import { NavLink, Redirect } from 'react-router-dom'
+import { Redirect, NavLink } from 'react-router-dom'
 
-class Signup extends React.Component {
+export default class EditProfile extends React.Component {
 
     state = {
         username: "",
@@ -15,7 +15,26 @@ class Signup extends React.Component {
         allParties: ["I don't go to parties.", "I'm always looking for a good time.", "I'm the center of attention.",
             "I'm great at making new friends.", "I love to mingle.", "I'm a wallflower.", "I tend to keep to myself.",
             "I prefer one-on-one interactions."],
-        errors: []
+        errors: [],
+        submitted: false
+    }
+
+    componentDidMount(){
+        fetch(`http://localhost:3000/users/${this.props.userID}`)
+        .then( r => r.json() )
+        .then( resObj => {
+            this.setState({
+                username: resObj.username,
+                email: resObj.email,
+                password: resObj.password,
+                age: resObj.age,
+                gender: resObj.gender,
+                zip_code: resObj.zip_code,
+                parties: resObj.parties,
+                picture: resObj.picture
+            })
+        })
+        
     }
 
     onChange = event => {
@@ -26,11 +45,8 @@ class Signup extends React.Component {
 
     submitClick = event => {
         event.preventDefault()
-        this.setState({
-            errors: []
-        })
-        fetch("http://localhost:3000/users", {
-            method: "POST",
+        fetch(`http://localhost:3000/users/${this.props.userID}`, {
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -47,39 +63,18 @@ class Signup extends React.Component {
                 }
             })
         })
-            .then(r => r.json())
-            .then(resp => {
-                if (resp.errors) {
-                    this.setState({
-                        errors: resp.errors,
-                        username: "",
-                        password: ""
-                    })
-                } else {
-                    fetch("http://localhost:3000/login", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            username: this.state.username,
-                            password: this.state.password
-                        })
-                    })
-                        .then(r => r.json())
-                        .then(resp => {
-                            if (resp.errors) {
-                                this.setState({
-                                    errors: resp.errors,
-                                    username: "",
-                                    password: ""
-                                })
-                            } else {
-                                this.props.setToken(resp)
-                            }
-                        })
-                }
-            })
+        .then(r => r.json())
+        .then(resp => {
+            if(resp.errors){
+                this.setState({
+                    errors: resp.errors
+                })
+            } else {
+                this.setState({
+                    submitted: true
+                })
+            }
+        })
     }
 
     componentWillUnmount() {
@@ -94,56 +89,48 @@ class Signup extends React.Component {
         const partyOptions = this.state.allParties.map((party) => {
             return <option value={party}>{party}</option>
         })
-
-        const errors = this.state.errors.map(error => <li>{error}</li>) 
         return (
-            <div className="login">
-                <ul className="errors">
-                {errors}
+            <div className="edit">
+              {this.state.errors.map(error => <p>{ error }</p>)}
 
-                </ul>
-
-                <h2>Signup</h2>
+                <h2>Edit Profile</h2>
                 <form>
                     <label>Username: </label>
-                    <input onChange={this.onChange} name="username" type="text" />
+                    <input onChange={this.onChange} name="username" type="text" value={this.state.username} />
                     <br />
                     <label>Email: </label>
-                    <input onChange={this.onChange} name="email" type="text" />
+                    <input onChange={this.onChange} name="email" type="text" value={this.state.email}/>
                     <br />
                     <label>Password: </label>
-                    <input onChange={this.onChange} name="password" type="password" />
+                    <input onChange={this.onChange} name="password" type="password"/>
                     <br />
                     <label>Age: </label>
-                    <input onChange={this.onChange} name="age" type="number" />
+                    <input onChange={this.onChange} name="age" type="number" value={this.state.age} />
                     <br />
                     <label>Gender: </label>
-                    <select onChange={this.onChange} name="gender">
+                    <select onChange={this.onChange} name="gender" value={this.state.gender}>
                         <option value="male">male</option>
                         <option value="female">female</option>
                         <option value="non-binary">non-binary</option>
                     </select>
                     <br />
                     <label>Zip Code: </label>
-                    <input onChange={this.onChange} name="zip_code" type="number" />
+                    <input onChange={this.onChange} name="zip_code" type="number" value={this.state.zip_code} />
                     <br />
                     <label>What are you like at parties?: </label>
-                    <select onChange={this.onChange} name="parties">
+                    <select onChange={this.onChange} name="parties" value={this.state.parties}>
                         {partyOptions}
                     </select>
                     <br />
                     <label>Picture: </label>
-                    <input onChange={this.onChange} name="picture" type="text" />
+                    <input onChange={this.onChange} name="picture" type="text" value={this.state.picture}/>
                     <br />
                     <button onClick={this.submitClick}>Submit</button>
 
                 </form>
-                { this.props.token ? <Redirect to="/home"/> : <Redirect to="/welcome" />}
-
+                {this.state.submitted ? <Redirect to="/home/my-profile"/> : ""}
             </div>
         )
     }
 
 }
-
-export default Signup

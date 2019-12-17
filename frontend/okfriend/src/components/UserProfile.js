@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export default class Profile extends Component {
+export default class UserProfile extends Component {
     state = {
         currentUser: {},
         currentUserInterests: []
@@ -49,7 +49,6 @@ export default class Profile extends Component {
 
                     </ul>
                 </div>
-                <button onClick={this.props.deleteAUser}>Delete</button>
             </div>
         )
     }

@@ -8,7 +8,7 @@
 Interest.destroy_all
 User.destroy_all
 
-users = RestClient.get 'https://randomuser.me/api/?results=5&nat=us'
+users = RestClient.get 'https://randomuser.me/api/?results=50&nat=us'
 
 zip_codes = RestClient.get 'https://zippopotam.us/us/ny/new%20york%20city'
 
@@ -26,7 +26,7 @@ parties_array = ["I don't go to parties.", "I'm always looking for a good time."
 
 resulting_users.each do |user|
     User.create(username: user["login"]["username"], email: user["email"], password: user["login"]["password"], 
-    age: user["dob"]["age"], gender: user["gender"], zip_code: resulting_zip_codes.sample["post code"], 
+    age: rand(25..45), gender: user["gender"], zip_code: resulting_zip_codes.sample["post code"], 
     parties: parties_array.sample, picture: user["picture"]["large"])
 end
 
