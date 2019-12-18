@@ -24,7 +24,13 @@ parties_array = ["I don't go to parties.", "I'm always looking for a good time."
             "I'm great at making new friends.", "I love to mingle.", "I'm a wallflower.","I tend to keep to myself.",
             "I prefer one-on-one interactions."]
 
-resulting_users.each do |user|
+resulting_users[0..49].each do |user|
+    User.create(username: user["login"]["username"], email: user["email"], password: user["login"]["password"], 
+    age: rand(25..45), gender: "non-binary", zip_code: resulting_zip_codes.sample["post code"], 
+    parties: parties_array.sample, picture: user["picture"]["large"])
+end
+
+resulting_users[50..resulting_users.length].each do |user|
     User.create(username: user["login"]["username"], email: user["email"], password: user["login"]["password"], 
     age: rand(25..45), gender: user["gender"], zip_code: resulting_zip_codes.sample["post code"], 
     parties: parties_array.sample, picture: user["picture"]["large"])
