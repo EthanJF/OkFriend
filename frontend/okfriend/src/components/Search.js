@@ -6,11 +6,11 @@ import zipcodes from 'zipcodes'
 export default class Search extends Component {
 
     state = {
-        gender: "",
-        beginning_age: 0,
-        ending_age: 0,
-        interest: "",
-        distance: 0,
+        gender: "everybody",
+        beginning_age: 25,
+        ending_age: 45,
+        interest: "hiking",
+        distance: 25,
         newUsers: [],
         zip_code: 0,
         nearbyZipCodes: []
@@ -71,19 +71,19 @@ export default class Search extends Component {
                 <form className="search-form">
                     <p>I'm looking for 
                         <br />
-                        <select onChange={this.handleChange} name="gender">
+                        <select onChange={this.handleChange} name="gender" value={this.state.gender}>
+                            <option value="everybody">everybody</option>
                             <option value="male">men</option>
                             <option value="female">women</option>
                             <option value="non-binary">non-binary people</option>
-                            <option value="everybody">everybody</option>
                         </select>
                         <br />
-                        who are between <input type="number" name="beginning_age" onChange={this.handleChange} /> and <input type="number" name="ending_age" onChange={this.handleChange} /> years old 
+                        who are between <input type="number" name="beginning_age" onChange={this.handleChange} value={this.state.beginning_age} /> and <input type="number" name="ending_age" onChange={this.handleChange} value={this.state.ending_age}/> years old 
                         <br /> and are interested in 
-                        <select name="interest" onChange={this.handleChange}>
+                        <select name="interest" onChange={this.handleChange} value={this.state.interest}>
                             {interests}
                         </select>  
-                        <br /> within <input type="number" name="distance" onChange={this.handleChange}/> miles.</p>
+                        <br /> within <input type="number" name="distance" onChange={this.handleChange} value={this.state.distance}/> miles.</p>
                         <input id="submit" type="submit" onClick={(event) => this.handleSubmit(event)}/>
                 </form>
                 <h1>Results:</h1>
