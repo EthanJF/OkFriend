@@ -32,7 +32,7 @@
 .area-users, .interest-users, .search-users {
   display: grid;
     grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: minmax(25vw, auto);
+  grid-auto-rows: minmax(20vw, auto);
 }
 
 .area-users img, .interest-users img, .search-users img {
@@ -40,7 +40,7 @@
 }
 
 .search-form input{
-  width: 20px;
+  width: 30px;
 }
 
 .search-form select {

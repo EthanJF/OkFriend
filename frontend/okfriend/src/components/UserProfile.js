@@ -38,6 +38,7 @@ export default class UserProfile extends Component {
                 </div>
                 <br />
                 <br />
+                <br />
                 <div className="party-div">
                     <h2>What are you like at parties?</h2>
                     <p>{user.parties}</p>

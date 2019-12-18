@@ -11,7 +11,7 @@ export default class MainDiv extends Component {
 
     state = {
         allUsers: [],
-        selectedUserID: 46,
+        selectedUserID: null,
         redirect: false,
         username: "",
         zip_code: 0,
@@ -45,6 +45,7 @@ export default class MainDiv extends Component {
         fetch(`http://localhost:3000/users/${this.props.userID}`)
         .then( r=> r.json())
         .then(resObj => {
+            console.log(resObj)
             this.setState({
                 username: resObj.username,
                 zip_code: resObj.zip_code,
@@ -78,8 +79,8 @@ export default class MainDiv extends Component {
                     <Route strict path="/home/my-profile/edit" render={(props) => <EditProfile {...props} userID={this.props.userID}/>}/>
                     <Route strict path="/home/my-profile" render={(props) => <MyProfile {...props} selectedUserID={this.state.selectedUserID} resetRedirect={this.resetRedirect} deleteAUser={this.deleteAUser} userID={this.props.userID} interests={this.props.interests}/>}/>
                     <Route strict path="/home/user-profile" render={(props) => <UserProfile {...props} selectedUserID={this.state.selectedUserID} resetRedirect={this.resetRedirect} deleteAUser={this.deleteAUser} userID={this.props.userID}/>}/>
-                    <Route strict path="/home/search" render={(props) => <Search {...props} interests={this.props.interests} allUsers={this.state.allUsers} setID={this.setID}/>}/>
-                    <Route strict path="/home" render={(props) => <HomePage {...props} allUsers={this.state.allUsers} selectedUserID={this.state.selectedUserID} setID={this.setID} />}/>
+                    <Route strict path="/home/search" render={(props) => <Search {...props} interests={this.props.interests} allUsers={this.state.allUsers} setID={this.setID} userID={this.props.userID}/>}/>
+                    <Route strict path="/home" render={(props) => <HomePage {...props} allUsers={this.state.allUsers} selectedUserID={this.state.selectedUserID} setID={this.setID} zip_code={this.state.zip_code} userID={this.props.userID} interests={this.state.interests}/>} />
 
                 </Switch>
             </div>

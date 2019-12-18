@@ -8,7 +8,7 @@
 Interest.destroy_all
 User.destroy_all
 
-users = RestClient.get 'https://randomuser.me/api/?results=50&nat=us'
+users = RestClient.get 'https://randomuser.me/api/?results=500'
 
 zip_codes = RestClient.get 'https://zippopotam.us/us/ny/new%20york%20city'
 
@@ -40,7 +40,7 @@ interest_names = ["hiking", "reading", "video games", "writing", "coding", "spor
 
 User.all.each do |each_user|
     interest_array = []
-    5.times do
+    10.times do
         new_interest = (interest_names - interest_array).sample
         Interest.create(name: new_interest, user: each_user)
         interest_array << new_interest
