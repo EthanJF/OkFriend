@@ -5,6 +5,7 @@ import UserProfile from './UserProfile'
 import HomePage from './HomePage'
 import Search from './Search'
 import NavBar from './NavBar'
+import FriendsChatPanel from './FriendsChatPanel'
 import { Route, Switch, Redirect } from 'react-router-dom'
 
 export default class MainDiv extends Component {
@@ -15,7 +16,8 @@ export default class MainDiv extends Component {
         redirect: false,
         username: "",
         zip_code: 0,
-        interests: []
+        interests: [],
+        myFriends: []
     }
 
     setID = (id) => {
@@ -49,7 +51,8 @@ export default class MainDiv extends Component {
             this.setState({
                 username: resObj.username,
                 zip_code: resObj.zip_code,
-                interests: resObj.interests
+                interests: resObj.interests,
+                myFriends: resObj.all_friendships
             })
         })
     }
@@ -69,20 +72,46 @@ export default class MainDiv extends Component {
         })
     }
 
+    addAFriend = () => {
+        fetch('http://localhost:3000/friendships', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                friendship: {
+                    user1_id: this.props.userID,
+                    user2_id: this.state.selectedUserID
+                }
+                
+            })
+        })
+        .then( r => r.json())
+        .then(resObj => {
+            this.setState({
+                myFriends: [...this.state.myFriends, resObj]
+            })
+        })
+    }
+
     render(){
         return(
             <div>
                 <NavBar showProfile={this.props.showProfile} handleProfileClick={this.props.handleProfileClick} handleHomeClick={this.props.handleHomeClick} onClick={this.props.logOutClick} username={this.state.username}/>
-    
+                <FriendsChatPanel userID={this.props.userID} friends={this.state.myFriends} setID={this.setID}/>
                 {this.state.redirect ? (<Redirect to="/home/user-profile"/>) : ""}
-                <Switch>
-                    <Route strict path="/home/my-profile/edit" render={(props) => <EditProfile {...props} userID={this.props.userID}/>}/>
-                    <Route strict path="/home/my-profile" render={(props) => <MyProfile {...props} selectedUserID={this.state.selectedUserID} resetRedirect={this.resetRedirect} deleteAUser={this.deleteAUser} userID={this.props.userID} interests={this.props.interests}/>}/>
-                    <Route strict path="/home/user-profile" render={(props) => <UserProfile {...props} selectedUserID={this.state.selectedUserID} resetRedirect={this.resetRedirect} deleteAUser={this.deleteAUser} userID={this.props.userID}/>}/>
-                    <Route strict path="/home/search" render={(props) => <Search {...props} interests={this.props.interests} allUsers={this.state.allUsers} setID={this.setID} userID={this.props.userID}/>}/>
-                    <Route strict path="/home" render={(props) => <HomePage {...props} allUsers={this.state.allUsers} selectedUserID={this.state.selectedUserID} setID={this.setID} zip_code={this.state.zip_code} userID={this.props.userID} interests={this.state.interests}/>} />
+                <div className="main-div">
+                    <Switch>
+                        <Route strict path="/home/my-profile/edit" render={(props) => <EditProfile {...props} userID={this.props.userID} />} />
+                        <Route strict path="/home/my-profile" render={(props) => <MyProfile {...props} selectedUserID={this.state.selectedUserID} resetRedirect={this.resetRedirect} deleteAUser={this.deleteAUser} userID={this.props.userID} interests={this.props.interests} />} />
+                        <Route strict path="/home/user-profile" render={(props) => <UserProfile {...props} selectedUserID={this.state.selectedUserID} resetRedirect={this.resetRedirect} deleteAUser={this.deleteAUser} userID={this.props.userID} addAFriend={this.addAFriend}/>} />
+                        <Route strict path="/home/search" render={(props) => <Search {...props} interests={this.props.interests} allUsers={this.state.allUsers} setID={this.setID} userID={this.props.userID} />} />
+                        <Route strict path="/home" render={(props) => <HomePage {...props} allUsers={this.state.allUsers} selectedUserID={this.state.selectedUserID} setID={this.setID} zip_code={this.state.zip_code} userID={this.props.userID} interests={this.state.interests} />} />
 
-                </Switch>
+                    </Switch>
+                </div>
+                
             </div>
         )
     }

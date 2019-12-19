@@ -50,6 +50,8 @@ export default class UserProfile extends Component {
 
                     </ul>
                 </div>
+                <button onClick={this.props.addAFriend}>Add Friend</button>
+                <button>Send Message</button>
             </div>
         )
     }

@@ -2,12 +2,12 @@ class UsersController < ApplicationController
 
     def index
         users = User.all
-        render json: users, include: :interests
+        render json: users, include: [:interests, :all_friendships]
     end
 
     def show
         user = User.find(params[:id])
-        render json: user, include: :interests
+        render json: user, include: [:interests, :all_friendships => {include: [:user1, :user2]}]
     end
 
     def create

@@ -1,3 +1,7 @@
+html, body {
+  height: 100%;
+}
+
 .logo {
   text-align: center;
   font-size: 3rem;
@@ -59,4 +63,21 @@
 .errors {
   color: red;
   list-style-type: none;
+}
+
+
+.main-div {
+  height: 100%;
+}
+
+
+.friends-chat-panel {
+  display: flex;
+  flex-direction: column;
+  float: right;
+  width: 15%;
+}
+
+.chat{
+  text-align: center;
 }

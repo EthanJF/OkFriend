@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :friendships
   resources :interests
   resources :users
   resources :login, only: [:create]
