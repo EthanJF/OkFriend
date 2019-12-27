@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :events
+  resources :messages
+  resources :chats
   resources :friendships
   resources :interests
   resources :users

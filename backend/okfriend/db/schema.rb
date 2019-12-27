@@ -10,10 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_18_205635) do
+ActiveRecord::Schema.define(version: 2019_12_26_233838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "chats", force: :cascade do |t|
+    t.integer "user1_id"
+    t.integer "user2_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.integer "user1_id"
+    t.integer "user2_id"
+    t.string "name"
+    t.string "description"
+    t.datetime "time"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "friendships", force: :cascade do |t|
     t.integer "user1_id"
@@ -30,6 +47,16 @@ ActiveRecord::Schema.define(version: 2019_12_18_205635) do
     t.index ["user_id"], name: "index_interests_on_user_id"
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "chat_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "content"
+    t.index ["chat_id"], name: "index_messages_on_chat_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "email"
@@ -44,4 +71,6 @@ ActiveRecord::Schema.define(version: 2019_12_18_205635) do
   end
 
   add_foreign_key "interests", "users"
+  add_foreign_key "messages", "chats"
+  add_foreign_key "messages", "users"
 end

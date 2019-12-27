@@ -10,6 +10,7 @@ export default class NavBar extends Component {
                 <NavLink exact to="/home">Home</NavLink>
                 <NavLink exact to="/home/search">Search</NavLink>
                 <NavLink exact to="/home/my-profile">Profile</NavLink>
+                <NavLink exact to="/home/calendar">Calendar</NavLink>
                 <NavLink onClick={this.props.onClick} exact to='/welcome'>Logout</NavLink>
 
             </div>

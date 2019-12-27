@@ -3,7 +3,8 @@ import React, { Component } from 'react'
 export default class UserProfile extends Component {
     state = {
         currentUser: {},
-        currentUserInterests: []
+        currentUserInterests: [],
+        currentFriend: false
     }
 
     componentDidMount() {
@@ -16,6 +17,11 @@ export default class UserProfile extends Component {
                     currentUserInterests: resObj.interests
                 })
             })
+        if (this.props.myFriends.find(element => element.user1_id === this.props.selectedUserID || element.user2_id === this.props.selectedUserID)){
+            this.setState({
+                currentFriend: true
+            })
+        }
     }
 
     render(){
@@ -37,8 +43,6 @@ export default class UserProfile extends Component {
                     <h3>Gender: {user.gender}</h3>
                 </div>
                 <br />
-                <br />
-                <br />
                 <div className="party-div">
                     <h2>What are you like at parties?</h2>
                     <p>{user.parties}</p>
@@ -50,8 +54,8 @@ export default class UserProfile extends Component {
 
                     </ul>
                 </div>
-                <button onClick={this.props.addAFriend}>Add Friend</button>
-                <button>Send Message</button>
+                {this.state.currentFriend ? (<button onClick={this.props.removeAFriend}>Remove Friend</button>) : (<button onClick={this.props.addAFriend}>Add Friend</button>)}
+                <button onClick={this.props.startChat}>Send Message</button>
             </div>
         )
     }

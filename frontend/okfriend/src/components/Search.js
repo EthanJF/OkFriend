@@ -55,7 +55,6 @@ export default class Search extends Component {
                 return user.interests[i]["name"] === this.state.interest
             }
         })
-        debugger
         this.setState({
             newUsers: interestUsers
         })
@@ -87,7 +86,6 @@ export default class Search extends Component {
                         <input id="submit" type="submit" onClick={(event) => this.handleSubmit(event)}/>
                 </form>
                 <h1>Results:</h1>
-                {console.log(this.state.newUsers)}
                 <SearchUsers allUsers={this.state.newUsers} setID={this.props.setID}/>
             </div>
         )

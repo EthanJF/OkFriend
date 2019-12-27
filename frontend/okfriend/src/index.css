@@ -7,22 +7,12 @@ html, body {
   font-size: 3rem;
 }
 
-.image-div {
-  padding: 2%;
-  float: left;
-}
-
 .image-div img {
-  max-height: 50%;
+  float: left;
+  max-width: 11%;
+  padding: 1%;
 }
 
-.detail-div {
-  margin-left: 5%;
-}
-
-.party-div {
-  float: clear;
-}
 
 .navbar {
   display: flex;
@@ -79,5 +69,55 @@ html, body {
 }
 
 .chat{
+  text-align: center;
+}
+
+.friends-list li {
+  cursor: pointer;
+}
+
+.chat ul {
+  text-align: left;
+  list-style-type: none;
+  padding: 0;
+}
+
+.my-message {
+  background-color: #1E90FF;
+  color: white;
+  border-radius: 5%;
+  padding: 2%;
+  margin: 3%;
+  text-align: right;
+}
+
+.other-message {
+  background-color: #d3d3d3;
+  color: black;
+  border-radius: 5%;
+  padding: 2%;
+  margin: 3%;
+  text-align: left;
+}
+
+.event-detail {
+  position: fixed;
+  right: 20%;
+  top: 21%;
+}
+
+.event-list {
+  position: fixed;
+  left: 5%;
+  top: 21%;
+}
+
+.event-form {
+  position: fixed;
+  bottom: 30%;
+  left: 30%;
+}
+
+.calendar-page {
   text-align: center;
 }

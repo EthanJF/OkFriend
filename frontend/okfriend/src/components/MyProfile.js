@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import EditProfile from './EditProfile'
-import { Route, Redirect, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 export default class MyProfile extends Component {
     state = {
@@ -10,7 +9,6 @@ export default class MyProfile extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props)
         this.props.resetRedirect()
         fetch(`http://localhost:3000/users/${this.props.userID}`)
             .then(r => r.json())
@@ -48,24 +46,28 @@ export default class MyProfile extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault()
-        fetch("http://localhost:3000/interests", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify({
-                name: this.state.newInterest,
-                user_id: this.props.userID
+        if(!this.state.currentUserInterests.find(element => element.name === this.state.newInterest)){
+            fetch("http://localhost:3000/interests", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify({
+                    name: this.state.newInterest,
+                    user_id: this.props.userID
+                })
             })
-        })
-        .then (r => r.json())
-        .then(resObj => {
-            console.log(resObj)
-            this.setState({
-                currentUserInterests: [...this.state.currentUserInterests, resObj]
-            })
-        })
+                .then(r => r.json())
+                .then(resObj => {
+                    this.setState({
+                        currentUserInterests: [...this.state.currentUserInterests, resObj]
+                    })
+                })
+        } else {
+            alert("You've already added this interest!")
+        }
+       
     }
 
     render() {
