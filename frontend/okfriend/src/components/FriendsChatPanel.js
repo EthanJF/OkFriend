@@ -5,7 +5,8 @@ import Chat from './Chat'
 export default class FriendsChatPanel extends Component {
 
     state = {
-        allChats: []
+        allChats: [],
+        thisChat: {}
     }
 
     componentDidMount(){
@@ -13,7 +14,8 @@ export default class FriendsChatPanel extends Component {
         .then( r=> r.json())
         .then(resObj => {
             this.setState({
-                allChats: resObj.all_chats
+                allChats: resObj.all_chats,
+                thisChat: resObj.all_chats[0]
             })
         })
     }
