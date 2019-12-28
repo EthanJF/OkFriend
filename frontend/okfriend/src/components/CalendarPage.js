@@ -8,7 +8,8 @@ export default class CalendarPage extends Component {
 
     state = {
         allEvents: [],
-        selectedEventID: null
+        selectedEventID: null,
+        showDetailComponent: false
     }
 
     componentDidMount(){
@@ -28,19 +29,18 @@ export default class CalendarPage extends Component {
         })
     }
 
-    showEventDetail = (eventObj) => {
+    showEventDetail = (eventID) => {
         this.setState({
-            selectedEventID: eventObj.id
+            selectedEventID: eventID,
+            showDetailComponent: true
         })
     }
 
     render(){
         return(
             <div className="calendar-page">
-                <h1>Hello from Calendar</h1>
-                {/* <Calendar/> */}
                 <EventList allEvents={this.state.allEvents} userID={this.props.userID} showEventDetail={this.showEventDetail}/>
-                <EventDetail selectedEventID={this.state.selectedEventID} userID={this.props.userID}/>
+                {this.state.showDetailComponent ? <EventDetail selectedEventID={this.state.selectedEventID} userID={this.props.userID} allEvents={this.state.allEvents}/> : ""}
                 <EventForm userID={this.props.userID} myFriends={this.props.myFriends} addEvent={this.addEvent}/>
             </div>
         )

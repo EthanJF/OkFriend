@@ -2,23 +2,23 @@ class EventsController < ApplicationController
 
   def index
     events = Event.all
-    render json: events
+    render json: events, include: [:user1, :user2]
   end
 
   def show
     event = Event.find(params[:id])
-    render json: event
+    render json: event, include: [:user1, :user2]
   end
 
   def create
     event = Event.create(event_params)
-    render json: event
+    render json: event, include: [:user1, :user2]
   end
 
   def destroy
     event = Event.find(params[:id])
     event.destroy
-    render json: event
+    render json: event, include: [:user1, :user2]
   end
 
 

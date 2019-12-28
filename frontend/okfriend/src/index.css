@@ -101,23 +101,19 @@ html, body {
 }
 
 .event-detail {
-  position: fixed;
+  position: absolute;
   right: 20%;
-  top: 21%;
+  top: 20%;
 }
 
 .event-list {
-  position: fixed;
+  position: absolute;
   left: 5%;
-  top: 21%;
+  top: 20%;
 }
 
 .event-form {
-  position: fixed;
-  bottom: 30%;
+  position: absolute;
+  bottom: 10%;
   left: 30%;
-}
-
-.calendar-page {
-  text-align: center;
 }
