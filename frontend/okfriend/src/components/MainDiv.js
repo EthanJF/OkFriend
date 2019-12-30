@@ -7,32 +7,21 @@ import Search from './Search'
 import CalendarPage from './CalendarPage'
 import NavBar from './NavBar'
 import FriendsChatPanel from './FriendsChatPanel'
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
 export default class MainDiv extends Component {
 
     state = {
         allUsers: [],
-        selectedUserID: null,
-        redirect: false,
+        // selectedUserID: null,
         username: "",
         zip_code: 0,
         interests: [],
         myFriends: [],
-        showChatPanel: false
-    }
-
-    setID = (id) => {
-        this.setState({
-            selectedUserID: id,
-            redirect: true
-        })
-    }
-
-    resetRedirect = () => {
-        this.setState({
-            redirect: false
-        })
+        allChats: [],
+        thisChat: {},
+        thisChatMessages: [],
+        message: ""
     }
 
     componentDidMount(){
@@ -49,11 +38,15 @@ export default class MainDiv extends Component {
         fetch(`http://localhost:3000/users/${this.props.userID}`)
         .then( r=> r.json())
         .then(resObj => {
+
             this.setState({
                 username: resObj.username,
                 zip_code: resObj.zip_code,
                 interests: resObj.interests,
-                myFriends: resObj.all_friendships
+                myFriends: resObj.all_friendships,
+                allChats: resObj.all_chats,
+                thisChat: resObj.all_chats[0],
+                thisChatMessages: resObj.all_chats[0].messages
             })
         })
     }
@@ -73,7 +66,7 @@ export default class MainDiv extends Component {
         })
     }
 
-    addAFriend = () => {
+    addAFriend = (otherUserID) => {
         if (!this.state.myFriends.find(element => element.user1_id === this.props.selectedUserID || element.user2_id === this.state.selectedUserID)){
             fetch('http://localhost:3000/friendships', {
                 method: "POST",
@@ -84,7 +77,7 @@ export default class MainDiv extends Component {
                 body: JSON.stringify({
                     friendship: {
                         user1_id: this.props.userID,
-                        user2_id: this.state.selectedUserID
+                        user2_id: otherUserID
                     }
 
                 })
@@ -100,8 +93,8 @@ export default class MainDiv extends Component {
         }
     }
 
-    removeAFriend = () => {
-        const friendshipID = this.state.myFriends.find(element => element.user1_id === this.props.selectedUserID || element.user2_id === this.state.selectedUserID)
+    removeAFriend = (otherUserID) => {
+        const friendshipID = this.state.myFriends.find(element => element.user1_id === otherUserID || element.user2_id === otherUserID)
         if(friendshipID){
             fetch(`http://localhost:3000/friendships/${friendshipID.id}`, {
                 method: "DELETE"
@@ -121,35 +114,127 @@ export default class MainDiv extends Component {
 
     }
 
-    startChat = () => {
+    startChat = (otherUserID) => {
         // if (this.state.myFriends.find(element => element.user1_id === this.props.selectedUserID || element.user2_id === this.state.selectedUserID)) {
             this.setState({
-                showChatPanel: true
+                // showChatPanel: true,
+                selectedUserID: otherUserID
             }, () => console.log("chat started"))
         // } else {
         //     alert("You must be friends to start a chat with someone!")
         // }
     }
 
-    startChatFromLI = (otherUserID) => {
+    startChatFromLI = (chat) => {
+        fetch(`http://localhost:3000/chats/${chat.id}`)
+        .then(r => r.json())
+        .then(resObj => {
+            this.setState({
+                // showChatPanel: true,
+                // selectedUserID: otherUserID
+                thisChatMessages: resObj.messages,
+                thisChat: resObj
+            }, () => console.log("chat started"))
+        })
         // if (this.state.myFriends.find(element => element.user1_id === this.props.selectedUserID || element.user2_id === this.state.selectedUserID)) {
-        this.setState({
-            showChatPanel: true,
-            selectedUserID: otherUserID
-        }, () => console.log("chat started"))
+       
         // } else {
         //     alert("You must be friends to start a chat with someone!")
         // }
     }
 
+    addAChat = (otherUserID) => {
+        const myChat = this.state.allChats.find(element => element.user1_id === otherUserID || element.user2_id === otherUserID)
+        if (!myChat) {
+            fetch("http://localhost:3000/chats", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify({
+                    chat: {
+                        user1_id: this.props.userID,
+                        user2_id: otherUserID
+                    }
+                })
+            })
+                .then(r => r.json())
+                .then(resObj => {
+                    console.log(resObj)
+                    this.setState({
+                        thisChat: resObj,
+                        otherUsername: resObj.user2.username,
+                        allChats: [...this.state.allChats, resObj]
+                    })
+                    alert("adding new chat")
+                })
+        } else {
+            this.setState({
+                thisChat: myChat,
+                otherUsername: myChat.user2.username
+        })
+    }
+}
+
+    deleteAChat = (id) => {
+        fetch(`http://localhost:3000/chats/${id}`, {
+            method: "DELETE"
+        })
+            .then(r => r.json())
+            .then(resObj => {
+                console.log("deleted")
+                const newChats = this.state.allChats.filter((chat) => {
+                    return chat.id !== resObj.id
+                })
+                this.setState({
+                    allChats: newChats
+                })
+            })
+    }
+
+    onChatSubmit = (event) => {
+        event.preventDefault()
+        fetch("http://localhost:3000/messages", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                message: {
+                    user_id: this.props.userID,
+                    chat_id: this.state.thisChat.id,
+                    content: event.target.message.value
+                }
+            })
+        })
+            .then(r => r.json())
+            .then(resObj => {
+                this.setState({
+                    thisChatMessages: [...this.state.thisChatMessages, resObj],
+                    message: ""
+                })
+            })
+
+        // event.target.message.value.clear()
+    }
+
+    onMessageChange = (event) => {
+        this.setState({
+            message: event.target.value
+        })
+    }
+
     render(){
+        console.log(this.state.thisChatMessages)
         const profileRoutes = this.state.allUsers.map((user) => {
-            return <Route exact path={`/home/user-profile/${user.username}`} render={(props) => <UserProfile {...props} selectedUserID={user.id} resetRedirect={this.resetRedirect} deleteAUser={this.deleteAUser} userID={this.props.userID} addAFriend={this.addAFriend} removeAFriend={this.removeAFriend} myFriends={this.state.myFriends} startChat={this.startChat} />} />
+            return <Route exact path={`/home/user-profile/${user.username}`} render={(props) => <UserProfile {...props} thisUserID={user.id} resetRedirect={this.resetRedirect} deleteAUser={this.deleteAUser} userID={this.props.userID} addAFriend={this.addAFriend} removeAFriend={this.removeAFriend} myFriends={this.state.myFriends} addAChat={this.addAChat} />} />
         })
         return(
             <div>
                 <NavBar showProfile={this.props.showProfile} handleProfileClick={this.props.handleProfileClick} handleHomeClick={this.props.handleHomeClick} onClick={this.props.logOutClick} username={this.state.username}/>
-                <FriendsChatPanel userID={this.props.userID} friends={this.state.myFriends} setID={this.setID} username={this.state.username} showChatPanel={this.state.showChatPanel} selectedUserID={this.state.selectedUserID} startChat={this.startChat} startChatFromLI={this.startChatFromLI}/>
+                <FriendsChatPanel userID={this.props.userID} friends={this.state.myFriends} setID={this.setID} username={this.state.username} showChatPanel={this.state.showChatPanel} selectedUserID={this.state.selectedUserID} startChat={this.startChat} startChatFromLI={this.startChatFromLI} allChats={this.state.allChats} thisChat={this.state.thisChat} deleteAChat={this.deleteAChat} thisChatMessages={this.state.thisChatMessages} onChatSubmit={this.onChatSubmit} message={this.state.message} onMessageChange={this.onMessageChange}/>
                 <div className="main-div">
                     <Switch>
                         <Route exact path="/home/my-profile/edit" render={(props) => <EditProfile {...props} userID={this.props.userID} />} />

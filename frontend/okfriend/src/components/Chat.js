@@ -2,96 +2,75 @@ import React, { Component } from 'react'
 
 export default class Chat extends Component {
 
-    state = {
-        messages: [],
-        message: "",
-        thisChat: {},
-        otherUsername: null
-    }
+    // state = {
+    //     messages: [],
+    //     message: ""
+    // //     otherUsername: null
+    // }
 
-    componentDidMount(){
-        const myChat = this.props.allChats.find(element => element.user1_id === this.props.selectedUserID || element.user2_id === this.props.selectedUserID)
-        if (!myChat){
-        fetch("http://localhost:3000/chats", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify({
-                chat: {
-                    user1_id: this.props.userID,
-                    user2_id: this.props.selectedUserID
-                }
-            })
-        })
-        .then( r => r.json())
-        .then( resObj => {
-            this.setState({
-                thisChat: resObj,
-                otherUsername: resObj.user2.username
-            }, () => this.props.addAChat(resObj))
-            alert("adding new chat")
-        })
-        } else {
-            this.setState({
-                thisChat: myChat,
-                otherUsername: myChat.user2.username
-            }, () => {
-                    fetch(`http://localhost:3000/chats/${myChat.id}`)
-                        .then(r => r.json())
-                        .then(resObj => {
-                            const newMessages = resObj.messages.map((message) => {
-                                return message
-                            })
-                            this.setState({
-                                messages: newMessages
-                            })
-                        })
-            })
-        }
-        
+    // componentDidMount(){
+    //     console.log(this.props.thisChat)
+    //     this.setState({
+    //         messages: this.props.thisChat.messages,
+    //         message: "",
+    //         // otherUsername: this.props.thisChat.user1.id === this.props.userID ? this.props.thisChat.user2.username : this.props.thisChat.user1.username
+    //     })
+    // }
 
-    }
-
-    onSubmit = (event) => {
-        event.preventDefault()
-        fetch("http://localhost:3000/messages", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify({
-                message: {
-                    user_id: this.props.userID,
-                    chat_id: this.state.thisChat.id,
-                    content: event.target.message.value
-                }
-            })
-        })
-        .then( r=> r.json())
-        .then(resObj => {
-            this.setState({
-                messages: [...this.state.messages, resObj],
-                message: ""
-            })
-        })
+    // onSubmit = (event) => {
+    //     event.preventDefault()
+    //     fetch("http://localhost:3000/messages", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             "Accept": "application/json"
+    //         },
+    //         body: JSON.stringify({
+    //             message: {
+    //                 user_id: this.props.userID,
+    //                 chat_id: this.props.thisChat.id,
+    //                 content: event.target.message.value
+    //             }
+    //         })
+    //     })
+    //     .then( r=> r.json())
+    //     .then(resObj => {
+    //         this.setState({
+    //             messages: [...this.state.messages, resObj],
+    //             message: ""
+    //         })
+    //     })
      
-        // event.target.message.value.clear()
-    }
+    //     // event.target.message.value.clear()
+    // }
 
-    onChange = (event) => {
-        this.setState({
-            message: event.target.value
-        })
-    }
+    // onChange = (event) => {
+    //     this.setState({
+    //         message: event.target.value
+    //     })
+    // }
 
     render(){
-        console.log(this.state.messages)
+        // console.log(this.props.thisChat)
+        // console.log(this.props.thisChat.messages)
+        const thisChat = this.props.thisChat
+        const theseMessages = this.props.thisChatMessages
+        let otherUsername
+        if(thisChat.user1){
+            otherUsername = thisChat.user1.id === this.props.userID ? this.props.thisChat.user2.username : this.props.thisChat.user1.username
+
+        }
+
+        // console.log(this.state.messages)
+        // this.setState({
+        //     messages: this.props.thisChat.messages,
+        //     message: "",
+        //     // otherUsername: this.props.thisChat.user1.id === this.props.userID ? this.props.thisChat.user2.username : this.props.thisChat.user1.username
+        // })
         let messages = null
-        if(this.state.messages.length !== 0 ){
-            messages = this.state.messages.map((message) => {
+        if(theseMessages){
+
+            messages = theseMessages.map((message) => {
                 if(message.user.username === this.props.username){
                     return <li className="my-message">{message.user.username} said: {message.content}</li>
                 }
@@ -102,14 +81,18 @@ export default class Chat extends Component {
         }
         
         return(
+            
             <div className="chat">
+                {console.log(thisChat)}
+                {console.log(otherUsername)}
+                {console.log(theseMessages)}
                 <h1>Chat</h1>
-                <h3>With {this.state.otherUsername}</h3>
+                <h3>With {otherUsername}</h3>
                 <ul>
                     {messages ? messages : ""}
                 </ul>
-                <form onSubmit={(event) => this.onSubmit(event)}>
-                    <input name="message" type="text" onChange={this.onChange} value={this.state.message}/>
+                <form onSubmit={(event) => this.props.onChatSubmit(event)}>
+                    <input name="message" type="text" onChange={this.props.onMessageChange} value={this.props.message}/>
                     <input type="submit"/>
                 </form>
             </div>

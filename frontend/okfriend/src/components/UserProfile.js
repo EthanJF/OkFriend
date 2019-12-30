@@ -8,8 +8,8 @@ export default class UserProfile extends Component {
     }
 
     componentDidMount() {
-        this.props.resetRedirect()
-        fetch(`http://localhost:3000/users/${this.props.selectedUserID}`)
+        // this.props.resetRedirect()
+        fetch(`http://localhost:3000/users/${this.props.thisUserID}`)
             .then(r => r.json())
             .then(resObj => {
                 this.setState({
@@ -17,7 +17,7 @@ export default class UserProfile extends Component {
                     currentUserInterests: resObj.interests
                 })
             })
-        if (this.props.myFriends.find(element => element.user1_id === this.props.selectedUserID || element.user2_id === this.props.selectedUserID)){
+        if (this.props.myFriends.find(element => element.user1_id === this.props.thisUserID || element.user2_id === this.props.thisUserID)){
             this.setState({
                 currentFriend: true
             })
@@ -54,8 +54,8 @@ export default class UserProfile extends Component {
 
                     </ul>
                 </div>
-                {this.state.currentFriend ? (<button onClick={this.props.removeAFriend}>Remove Friend</button>) : (<button onClick={this.props.addAFriend}>Add Friend</button>)}
-                <button onClick={this.props.startChat}>Send Message</button>
+                {this.state.currentFriend ? (<button onClick={() => this.props.removeAFriend(this.state.currentUser.id)}>Remove Friend</button>) : (<button onClick={() => this.props.addAFriend(this.state.currentUser.id)}>Add Friend</button>)}
+                <button onClick={() => this.props.addAChat(this.state.currentUser.id)}>Send Message</button>
             </div>
         )
     }
