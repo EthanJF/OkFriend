@@ -22,6 +22,7 @@ export default class MainDiv extends Component {
         thisChat: {},
         thisChatMessages: [],
         message: ""
+
     }
 
     componentDidMount(){
@@ -133,7 +134,8 @@ export default class MainDiv extends Component {
                 // showChatPanel: true,
                 // selectedUserID: otherUserID
                 thisChatMessages: resObj.messages,
-                thisChat: resObj
+                thisChat: resObj,
+                message: ""
             }, () => console.log("chat started"))
         })
         // if (this.state.myFriends.find(element => element.user1_id === this.props.selectedUserID || element.user2_id === this.state.selectedUserID)) {
@@ -165,13 +167,15 @@ export default class MainDiv extends Component {
                     this.setState({
                         thisChat: resObj,
                         otherUsername: resObj.user2.username,
-                        allChats: [...this.state.allChats, resObj]
+                        allChats: [...this.state.allChats, resObj],
+                        thisChatMessages: []
                     })
                     alert("adding new chat")
                 })
         } else {
             this.setState({
                 thisChat: myChat,
+                thisChatMessages: myChat.messages,
                 otherUsername: myChat.user2.username
         })
     }
@@ -226,11 +230,22 @@ export default class MainDiv extends Component {
         })
     }
 
+    renderUserProfile = (renderParams) => {
+        // console.log(renderParams)
+        const slug = renderParams.match.params.slug
+        const user = this.state.allUsers.find(user => user.username === slug)
+        if (user) {
+
+            return <UserProfile thisUserID={user.id} deleteAUser={this.deleteAUser} userID={this.props.userID} addAFriend={this.addAFriend} removeAFriend={this.removeAFriend} myFriends={this.state.myFriends} addAChat={this.addAChat} currentUser={user} currentUserInterests={user.interests}/>
+            
+        }
+    }
+
     render(){
         console.log(this.state.thisChatMessages)
-        const profileRoutes = this.state.allUsers.map((user) => {
-            return <Route exact path={`/home/user-profile/${user.username}`} render={(props) => <UserProfile {...props} thisUserID={user.id} resetRedirect={this.resetRedirect} deleteAUser={this.deleteAUser} userID={this.props.userID} addAFriend={this.addAFriend} removeAFriend={this.removeAFriend} myFriends={this.state.myFriends} addAChat={this.addAChat} />} />
-        })
+        // const profileRoutes = this.state.allUsers.map((user) => {
+        //     return <Route path={`/home/${user.username}`} render={(props) => <UserProfile {...props} thisUserID={user.id} resetRedirect={this.resetRedirect} deleteAUser={this.deleteAUser} userID={this.props.userID} addAFriend={this.addAFriend} removeAFriend={this.removeAFriend} myFriends={this.state.myFriends} addAChat={this.addAChat} />} exact />
+        // })
         return(
             <div>
                 <NavBar showProfile={this.props.showProfile} handleProfileClick={this.props.handleProfileClick} handleHomeClick={this.props.handleHomeClick} onClick={this.props.logOutClick} username={this.state.username}/>
@@ -239,7 +254,8 @@ export default class MainDiv extends Component {
                     <Switch>
                         <Route exact path="/home/my-profile/edit" render={(props) => <EditProfile {...props} userID={this.props.userID} />} />
                         <Route exact path="/home/my-profile" render={(props) => <MyProfile {...props} selectedUserID={this.state.selectedUserID} resetRedirect={this.resetRedirect} deleteAUser={this.deleteAUser} userID={this.props.userID} interests={this.props.interests} />} />
-                       {profileRoutes}
+                       {/* {profileRoutes} */}
+                        <Route path="/home/user-profile/:slug" render={ this.renderUserProfile } />
                         {/* <Route path="/home/user-profile" render={(props) => <UserProfile {...props} selectedUserID={this.state.selectedUserID} resetRedirect={this.resetRedirect} deleteAUser={this.deleteAUser} userID={this.props.userID} addAFriend={this.addAFriend} removeAFriend={this.removeAFriend} myFriends={this.state.myFriends} startChat={this.startChat}/>} /> */}
                         <Route exact path="/home/search" render={(props) => <Search {...props} interests={this.props.interests} allUsers={this.state.allUsers} setID={this.setID} userID={this.props.userID} />} />
                         <Route exact path="/home/calendar" render={(props) => <CalendarPage {...props} userID={this.props.userID} myFriends={this.state.myFriends} />} />

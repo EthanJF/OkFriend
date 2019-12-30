@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 
 export default class Friends extends Component {
+
+
     render(){
         const friends = this.props.friends.map((friend) => {
             if(friend.user2.id !== this.props.userID) {

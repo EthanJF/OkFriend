@@ -1,32 +1,32 @@
 import React, { Component } from 'react'
 
 export default class UserProfile extends Component {
-    state = {
-        currentUser: {},
-        currentUserInterests: [],
-        currentFriend: false
-    }
+    // state = {
+    //     currentUser: {},
+    //     currentUserInterests: [],
+    //     currentFriend: false
+    // }
 
-    componentDidMount() {
+    // componentDidMount() {
         // this.props.resetRedirect()
-        fetch(`http://localhost:3000/users/${this.props.thisUserID}`)
-            .then(r => r.json())
-            .then(resObj => {
-                this.setState({
-                    currentUser: resObj,
-                    currentUserInterests: resObj.interests
-                })
-            })
-        if (this.props.myFriends.find(element => element.user1_id === this.props.thisUserID || element.user2_id === this.props.thisUserID)){
-            this.setState({
-                currentFriend: true
-            })
-        }
-    }
+        // fetch(`http://localhost:3000/users/${this.props.thisUserID}`)
+        //     .then(r => r.json())
+        //     .then(resObj => {
+        //         this.setState({
+        //             currentUser: resObj,
+        //             currentUserInterests: resObj.interests
+        //         })
+        //     })
+        // if (this.props.myFriends.find(element => element.user1_id === this.props.thisUserID || element.user2_id === this.props.thisUserID)){
+        //     this.setState({
+        //         currentFriend: true
+        //     })
+        // }
+    // }
 
     render(){
-        const user = this.state.currentUser
-        const userInterests = this.state.currentUserInterests
+        const user = this.props.currentUser
+        const userInterests = this.props.currentUserInterests
 
         const interests = userInterests.map((interest) => {
             return <li key={interest.id}>{interest.name}</li>
@@ -54,7 +54,7 @@ export default class UserProfile extends Component {
 
                     </ul>
                 </div>
-                {this.state.currentFriend ? (<button onClick={() => this.props.removeAFriend(this.state.currentUser.id)}>Remove Friend</button>) : (<button onClick={() => this.props.addAFriend(this.state.currentUser.id)}>Add Friend</button>)}
+                {this.props.currentFriend ? (<button onClick={() => this.props.removeAFriend(this.state.currentUser.id)}>Remove Friend</button>) : (<button onClick={() => this.props.addAFriend(this.state.currentUser.id)}>Add Friend</button>)}
                 <button onClick={() => this.props.addAChat(this.state.currentUser.id)}>Send Message</button>
             </div>
         )
