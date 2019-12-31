@@ -132,9 +132,6 @@ class Signup extends React.Component {
                         {partyOptions}
                     </select>
                     <br />
-                    <label>Picture: </label>
-                    <input onChange={this.onChange} name="picture" type="text" />
-                    <br />
                     <button onClick={this.submitClick}>Submit</button>
 
                 </form>

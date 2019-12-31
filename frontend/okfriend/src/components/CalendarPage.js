@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-// import Calendar from 'react-calendar'
 import EventList from './EventList'
 import EventDetail from './EventDetail'
 import EventForm from './EventForm'

@@ -9,7 +9,6 @@ export default class MyProfile extends Component {
     }
 
     componentDidMount() {
-        // this.props.resetRedirect()
         fetch(`http://localhost:3000/users/${this.props.userID}`)
             .then(r => r.json())
             .then(resObj => {

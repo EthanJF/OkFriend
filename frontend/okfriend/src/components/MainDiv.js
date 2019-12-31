@@ -13,7 +13,6 @@ export default class MainDiv extends Component {
 
     state = {
         allUsers: [],
-        // selectedUserID: null,
         username: "",
         zip_code: 0,
         interests: [],
@@ -47,7 +46,7 @@ export default class MainDiv extends Component {
                 myFriends: resObj.all_friendships,
                 allChats: resObj.all_chats,
                 thisChat: resObj.all_chats[0],
-                thisChatMessages: resObj.all_chats[0].messages
+                thisChatMessages: resObj.all_chats[0] ? resObj.all_chats.messages : []
             })
         })
     }
@@ -89,9 +88,7 @@ export default class MainDiv extends Component {
                         myFriends: [...this.state.myFriends, resObj]
                     })
                 })
-        } else {
-            alert("This person is already your friend!")
-        }
+        } 
     }
 
     removeAFriend = (otherUserID) => {
@@ -109,40 +106,21 @@ export default class MainDiv extends Component {
                         myFriends: newFriends
                     })
                 })
-        } else {
-            alert("This person is not your friend!")
-        }
+        } 
 
     }
 
-    startChat = (otherUserID) => {
-        // if (this.state.myFriends.find(element => element.user1_id === this.props.selectedUserID || element.user2_id === this.state.selectedUserID)) {
-            this.setState({
-                // showChatPanel: true,
-                selectedUserID: otherUserID
-            }, () => console.log("chat started"))
-        // } else {
-        //     alert("You must be friends to start a chat with someone!")
-        // }
-    }
 
     startChatFromLI = (chat) => {
         fetch(`http://localhost:3000/chats/${chat.id}`)
         .then(r => r.json())
         .then(resObj => {
             this.setState({
-                // showChatPanel: true,
-                // selectedUserID: otherUserID
                 thisChatMessages: resObj.messages,
                 thisChat: resObj,
                 message: ""
             }, () => console.log("chat started"))
         })
-        // if (this.state.myFriends.find(element => element.user1_id === this.props.selectedUserID || element.user2_id === this.state.selectedUserID)) {
-       
-        // } else {
-        //     alert("You must be friends to start a chat with someone!")
-        // }
     }
 
     addAChat = (otherUserID) => {
@@ -170,7 +148,6 @@ export default class MainDiv extends Component {
                         allChats: [...this.state.allChats, resObj],
                         thisChatMessages: []
                     })
-                    alert("adding new chat")
                 })
         } else {
             this.setState({
@@ -191,8 +168,11 @@ export default class MainDiv extends Component {
                 const newChats = this.state.allChats.filter((chat) => {
                     return chat.id !== resObj.id
                 })
+                const lastChat = newChats[newChats.length - 1]
                 this.setState({
-                    allChats: newChats
+                    allChats: newChats,
+                    thisChat: lastChat,
+                    thisChatmessages: lastChat.messages
                 })
             })
     }
@@ -220,8 +200,6 @@ export default class MainDiv extends Component {
                     message: ""
                 })
             })
-
-        // event.target.message.value.clear()
     }
 
     onMessageChange = (event) => {
@@ -231,7 +209,6 @@ export default class MainDiv extends Component {
     }
 
     renderUserProfile = (renderParams) => {
-        // console.log(renderParams)
         const slug = renderParams.match.params.slug
         const user = this.state.allUsers.find(user => user.username === slug)
         if (user) {
@@ -242,10 +219,6 @@ export default class MainDiv extends Component {
     }
 
     render(){
-        console.log(this.state.thisChatMessages)
-        // const profileRoutes = this.state.allUsers.map((user) => {
-        //     return <Route path={`/home/${user.username}`} render={(props) => <UserProfile {...props} thisUserID={user.id} resetRedirect={this.resetRedirect} deleteAUser={this.deleteAUser} userID={this.props.userID} addAFriend={this.addAFriend} removeAFriend={this.removeAFriend} myFriends={this.state.myFriends} addAChat={this.addAChat} />} exact />
-        // })
         return(
             <div>
                 <NavBar showProfile={this.props.showProfile} handleProfileClick={this.props.handleProfileClick} handleHomeClick={this.props.handleHomeClick} onClick={this.props.logOutClick} username={this.state.username}/>
@@ -254,9 +227,7 @@ export default class MainDiv extends Component {
                     <Switch>
                         <Route exact path="/home/my-profile/edit" render={(props) => <EditProfile {...props} userID={this.props.userID} />} />
                         <Route exact path="/home/my-profile" render={(props) => <MyProfile {...props} selectedUserID={this.state.selectedUserID} resetRedirect={this.resetRedirect} deleteAUser={this.deleteAUser} userID={this.props.userID} interests={this.props.interests} />} />
-                       {/* {profileRoutes} */}
                         <Route path="/home/user-profile/:slug" render={ this.renderUserProfile } />
-                        {/* <Route path="/home/user-profile" render={(props) => <UserProfile {...props} selectedUserID={this.state.selectedUserID} resetRedirect={this.resetRedirect} deleteAUser={this.deleteAUser} userID={this.props.userID} addAFriend={this.addAFriend} removeAFriend={this.removeAFriend} myFriends={this.state.myFriends} startChat={this.startChat}/>} /> */}
                         <Route exact path="/home/search" render={(props) => <Search {...props} interests={this.props.interests} allUsers={this.state.allUsers} setID={this.setID} userID={this.props.userID} />} />
                         <Route exact path="/home/calendar" render={(props) => <CalendarPage {...props} userID={this.props.userID} myFriends={this.state.myFriends} />} />
                         <Route exact path="/home" render={(props) => <HomePage {...props} allUsers={this.state.allUsers} selectedUserID={this.state.selectedUserID} setID={this.setID} zip_code={this.state.zip_code} userID={this.props.userID} interests={this.state.interests} />} />

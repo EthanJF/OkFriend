@@ -16,7 +16,7 @@ export default class Friends extends Component {
             <div className="friends">
                 <h1>My Friends</h1>
                 <ul className="friends-list">
-                    {friends}
+                    {friends.length !== 0 ? friends : "You don't have any friends!"}
                 </ul>
             </div>
         )

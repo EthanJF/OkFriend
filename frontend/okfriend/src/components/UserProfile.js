@@ -1,28 +1,6 @@
 import React, { Component } from 'react'
 
 export default class UserProfile extends Component {
-    // state = {
-    //     currentUser: {},
-    //     currentUserInterests: [],
-    //     currentFriend: false
-    // }
-
-    // componentDidMount() {
-        // this.props.resetRedirect()
-        // fetch(`http://localhost:3000/users/${this.props.thisUserID}`)
-        //     .then(r => r.json())
-        //     .then(resObj => {
-        //         this.setState({
-        //             currentUser: resObj,
-        //             currentUserInterests: resObj.interests
-        //         })
-        //     })
-        // if (this.props.myFriends.find(element => element.user1_id === this.props.thisUserID || element.user2_id === this.props.thisUserID)){
-        //     this.setState({
-        //         currentFriend: true
-        //     })
-        // }
-    // }
 
     render(){
         const user = this.props.currentUser
@@ -31,6 +9,8 @@ export default class UserProfile extends Component {
         const interests = userInterests.map((interest) => {
             return <li key={interest.id}>{interest.name}</li>
         })
+
+        const currentFriend = this.props.myFriends.find(element => element.user1_id === this.props.thisUserID || element.user2_id === this.props.thisUserID)
         return(
             <div>
                 <h1>{user.username}</h1>
@@ -54,8 +34,8 @@ export default class UserProfile extends Component {
 
                     </ul>
                 </div>
-                {this.props.currentFriend ? (<button onClick={() => this.props.removeAFriend(this.state.currentUser.id)}>Remove Friend</button>) : (<button onClick={() => this.props.addAFriend(this.state.currentUser.id)}>Add Friend</button>)}
-                <button onClick={() => this.props.addAChat(this.state.currentUser.id)}>Send Message</button>
+                {currentFriend ? (<button onClick={() => this.props.removeAFriend(this.props.currentUser.id)}>Remove Friend</button>) : (<button onClick={() => this.props.addAFriend(this.props.currentUser.id)}>Add Friend</button>)}
+                <button onClick={() => this.props.addAChat(this.props.currentUser.id)}>Send Message</button>
             </div>
         )
     }
