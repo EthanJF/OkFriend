@@ -24,7 +24,7 @@ export default class AreaUsers extends Component {
             return this.state.nearbyZipCodes.includes(user.zip_code)
         })
         let rand = Math.floor(Math.random() * nearbyUsers.length)
-        const allUsers = nearbyUsers.slice(rand,(rand + 8)).map((user) => {
+        const allUsers = nearbyUsers.slice(rand,(rand + 12)).map((user) => {
             return <UserCard user={user} key={user.id} setID={this.props.setID}/>
         })
         return(

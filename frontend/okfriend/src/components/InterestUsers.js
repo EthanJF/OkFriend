@@ -8,7 +8,7 @@ export default class InterestUsers extends Component {
                 return user.interests[i]["name"] === this.props.randomInterest
             }
         })
-        const allUsers = interestUsers.slice(0,8).map((user) => {
+        const allUsers = interestUsers.slice(0,12).map((user) => {
             return <UserCard user={user} key={user.id} setID={this.props.setID}/>
         })
         return (

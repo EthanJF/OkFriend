@@ -78,11 +78,11 @@ export default class MyProfile extends Component {
 
         const userInterests = this.state.currentUserInterests.map((interest) => {
             return <div>
-                <li key={interest.id}>{interest.name}</li><button onClick={this.deleteInterest} data-id={interest.id} name={interest.name}>Delete Interest</button>
+                <li key={interest.id}>{interest.name}  <button onClick={this.deleteInterest} data-id={interest.id} name={interest.name}>Delete</button></li>
             </div>
         })
         return (
-            <div>
+            <div className="user-profile">
                 <h1>{user.username}</h1>
                 <div className="image-div">
                     <img alt="profile" src={user.picture} />
@@ -96,7 +96,6 @@ export default class MyProfile extends Component {
                     <h2>What are you like at parties?</h2>
                     <p>{user.parties}</p>
                 </div>
-                <NavLink exact to="/home/my-profile/edit">Edit Profile</NavLink>
                 <div className="interest-div">
                     <h2>My Interests</h2>
                     <ul>
@@ -112,9 +111,15 @@ export default class MyProfile extends Component {
                         <input type="submit" onClick={this.handleSubmit}/>
                     </form>
                 </div>
+                <div className="about-me">
+                    <h2>About Me</h2>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </div>
                 <br />
                 <br />
-                <button onClick={this.props.deleteAUser}>Delete Profile</button>
+                <div className="edit-delete-div">
+                    <NavLink exact to="/home/my-profile/edit">Edit Profile</NavLink>
+                </div>
             </div>
         )
     }

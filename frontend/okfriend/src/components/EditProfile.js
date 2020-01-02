@@ -129,6 +129,9 @@ export default class EditProfile extends React.Component {
 
                 </form>
                 {this.state.submitted ? <Redirect to="/home/my-profile"/> : ""}
+                <br />
+                <button onClick={this.props.deleteAUser}>Delete Profile</button>
+
             </div>
         )
     }

@@ -36,6 +36,11 @@ export default class EventForm extends Component {
         .then(r => r.json())
         .then(resObj => {
             this.props.addEvent(resObj)
+            this.setState({
+                name: "",
+                description: "",
+                time: new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0]
+            })
         })
     }
 
@@ -46,7 +51,7 @@ export default class EventForm extends Component {
         })
         return (
             <div className="event-form">
-                <h1>Hello from EventForm</h1>
+                <h1>Create a New Event</h1>
                 <form onSubmit={this.onSubmit}>
                     <label>Name: </label>
                     <input type="text" name="name" value={this.state.name} onChange={this.onChange}/>
@@ -59,6 +64,7 @@ export default class EventForm extends Component {
                     <br />
                     <label>Other Participant: </label>
                     <select name="otherUser" value={this.state.otherUser} onChange={this.onChange}>
+                        <option name="otherUser" value="null">Select...</option>
                         {myFriends}
                     </select>
                     <br />

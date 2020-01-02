@@ -119,7 +119,7 @@ export default class MainDiv extends Component {
                 thisChatMessages: resObj.messages,
                 thisChat: resObj,
                 message: ""
-            }, () => console.log("chat started"))
+            })
         })
     }
 
@@ -141,7 +141,6 @@ export default class MainDiv extends Component {
             })
                 .then(r => r.json())
                 .then(resObj => {
-                    console.log(resObj)
                     this.setState({
                         thisChat: resObj,
                         otherUsername: resObj.user2.username,
@@ -164,7 +163,6 @@ export default class MainDiv extends Component {
         })
             .then(r => r.json())
             .then(resObj => {
-                console.log("deleted")
                 const newChats = this.state.allChats.filter((chat) => {
                     return chat.id !== resObj.id
                 })
@@ -225,7 +223,7 @@ export default class MainDiv extends Component {
                 <FriendsChatPanel userID={this.props.userID} friends={this.state.myFriends} setID={this.setID} username={this.state.username} showChatPanel={this.state.showChatPanel} selectedUserID={this.state.selectedUserID} startChat={this.startChat} startChatFromLI={this.startChatFromLI} allChats={this.state.allChats} thisChat={this.state.thisChat} deleteAChat={this.deleteAChat} thisChatMessages={this.state.thisChatMessages} onChatSubmit={this.onChatSubmit} message={this.state.message} onMessageChange={this.onMessageChange}/>
                 <div className="main-div">
                     <Switch>
-                        <Route exact path="/home/my-profile/edit" render={(props) => <EditProfile {...props} userID={this.props.userID} />} />
+                        <Route exact path="/home/my-profile/edit" render={(props) => <EditProfile {...props} userID={this.props.userID} deleteAUser={this.deleteAUser} />} />
                         <Route exact path="/home/my-profile" render={(props) => <MyProfile {...props} selectedUserID={this.state.selectedUserID} resetRedirect={this.resetRedirect} deleteAUser={this.deleteAUser} userID={this.props.userID} interests={this.props.interests} />} />
                         <Route path="/home/user-profile/:slug" render={ this.renderUserProfile } />
                         <Route exact path="/home/search" render={(props) => <Search {...props} interests={this.props.interests} allUsers={this.state.allUsers} setID={this.setID} userID={this.props.userID} />} />

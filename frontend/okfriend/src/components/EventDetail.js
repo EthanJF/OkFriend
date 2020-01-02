@@ -21,7 +21,7 @@ export default class EventDetail extends Component {
         return (
            
             <div className="event-detail">
-                <h1>Hello from EventDetail</h1>
+                <h1>More About Your Event</h1>
                 {thisEvent !== undefined ? 
                  (<div>
                  <h3>Name: {thisEvent.name}</h3>
