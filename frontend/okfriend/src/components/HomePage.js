@@ -27,7 +27,7 @@ export default class HomePage extends Component {
             <div className="homepage">
                 <h1>Recommended Friends In Your Area</h1>
                 <br />
-                <AreaUsers allUsers={this.props.allUsers} setID={this.props.setID} zip_code={this.props.zip_code} userID={this.props.userID}/>
+                <AreaUsers allUsers={this.props.allUsers} setID={this.props.setID} zip_code={this.props.zip_code} userID={this.props.userID} nearbyZipCodes={this.props.nearbyZipCodes} randomNumber={this.props.randomNumber} nearbyUsers={this.props.nearbyUsers}/>
                 {this.state.randomInterest ? (<h1>Recommended Friends Who Enjoy {this.state.randomInterest}</h1>) : (<div><h1>You don't have any interests!</h1><p>Go to your profile to add some interests</p></div>)}
                 <br />
                 <InterestUsers allUsers={this.props.allUsers} setID={this.props.setID} zip_code={this.props.zip_code} userID={this.props.userID} randomInterest={this.state.randomInterest}/>

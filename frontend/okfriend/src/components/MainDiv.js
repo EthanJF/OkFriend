@@ -8,6 +8,7 @@ import CalendarPage from './CalendarPage'
 import NavBar from './NavBar'
 import FriendsChatPanel from './FriendsChatPanel'
 import { Route, Switch } from 'react-router-dom'
+import zipcodes from 'zipcodes'
 
 export default class MainDiv extends Component {
 
@@ -20,34 +21,41 @@ export default class MainDiv extends Component {
         allChats: [],
         thisChat: {},
         thisChatMessages: [],
-        message: ""
-
+        message: "",
+        nearbyZipCodes: [],
+        randomNumber: 0,
+        nearbyUsers: []
     }
 
     componentDidMount(){
         fetch("http://localhost:3000/users")
         .then(r => r.json())
-        .then(resObj => {
-            const myUsers = resObj.filter((user) => {
-                return user.id !== this.props.userID
-            })
-            this.setState({
-                allUsers: myUsers
-            })
-        })
-        fetch(`http://localhost:3000/users/${this.props.userID}`)
-        .then( r=> r.json())
-        .then(resObj => {
-
-            this.setState({
-                username: resObj.username,
-                zip_code: resObj.zip_code,
-                interests: resObj.interests,
-                myFriends: resObj.all_friendships,
-                allChats: resObj.all_chats,
-                thisChat: resObj.all_chats[0],
-                thisChatMessages: resObj.all_chats[0] ? resObj.all_chats.messages : []
-            })
+        .then(resObj1 => {
+            fetch(`http://localhost:3000/users/${this.props.userID}`)
+                .then(r => r.json())
+                .then(resObj2 => {
+                    const myUsers = resObj1.filter((user) => {
+                        return user.id !== this.props.userID
+                    })
+                    const rad = zipcodes.radius(resObj2.zip_code, 5)
+                    const nearbyUsers = myUsers.filter((user) => {
+                        return rad.includes(user.zip_code)
+                    })
+                    let rand = Math.floor(Math.random() * nearbyUsers.length)
+                    this.setState({
+                        username: resObj2.username,
+                        zip_code: resObj2.zip_code,
+                        interests: resObj2.interests,
+                        myFriends: resObj2.all_friendships,
+                        allChats: resObj2.all_chats,
+                        thisChat: resObj2.all_chats[0],
+                        thisChatMessages: resObj2.all_chats[0] ? resObj2.all_chats.messages : [],
+                        allUsers: myUsers,
+                        nearbyUsers: nearbyUsers,
+                        nearbyZipCodes: rad,
+                        randomNumber: rand
+                    })
+                })
         })
     }
 
@@ -228,7 +236,7 @@ export default class MainDiv extends Component {
                         <Route path="/home/user-profile/:slug" render={ this.renderUserProfile } />
                         <Route exact path="/home/search" render={(props) => <Search {...props} interests={this.props.interests} allUsers={this.state.allUsers} setID={this.setID} userID={this.props.userID} />} />
                         <Route exact path="/home/calendar" render={(props) => <CalendarPage {...props} userID={this.props.userID} myFriends={this.state.myFriends} />} />
-                        <Route exact path="/home" render={(props) => <HomePage {...props} allUsers={this.state.allUsers} selectedUserID={this.state.selectedUserID} setID={this.setID} zip_code={this.state.zip_code} userID={this.props.userID} interests={this.state.interests} />} />
+                        <Route exact path="/home" render={(props) => <HomePage {...props} allUsers={this.state.allUsers} selectedUserID={this.state.selectedUserID} setID={this.setID} zip_code={this.state.zip_code} userID={this.props.userID} interests={this.state.interests} nearbyZipCodes={this.state.nearbyZipCodes} randomNumber={this.state.randomNumber} nearbyUsers={this.state.nearbyUsers}/>} />
                     </Switch>
                 </div>
                 
