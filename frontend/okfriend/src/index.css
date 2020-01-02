@@ -4,6 +4,7 @@ body {
   background-color: #ffdfdf;
   color: #233567;
   font-family: 'Poppins', sans-serif;
+  margin: 0;
 }
 
 .logo {
@@ -132,9 +133,11 @@ select {
   color: #ffdfdf;
   height: 100%;
   text-align: right;
-  /* overflow-y: scroll; */
-  padding-bottom: 25% ;
+  overflow-y: scroll;
+  padding-bottom: 40% ;
   margin-bottom: 0;
+  margin-right: 0;
+  padding-right: 1%;
 }
 
 .friends-chat-panel ul {

@@ -12,7 +12,13 @@ class EventsController < ApplicationController
 
   def create
     event = Event.create(event_params)
-    render json: event, include: [:user1, :user2]
+    if event.valid?
+        render json: event, include: [:user1, :user2]
+    else
+        render json: {
+            errors: event.errors.full_messages
+        }
+    end
   end
 
   def destroy

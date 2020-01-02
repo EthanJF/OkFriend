@@ -53,9 +53,7 @@ class Signup extends React.Component {
             .then(resp => {
                 if (resp.errors) {
                     this.setState({
-                        errors: resp.errors,
-                        username: "",
-                        password: ""
+                        errors: resp.errors
                     })
                 } else {
                     fetch("http://localhost:3000/login", {

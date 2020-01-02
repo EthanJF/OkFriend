@@ -6,7 +6,8 @@ export default class EventForm extends Component {
         name: "",
         description: "",
         time: new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0],
-        otherUser: null
+        otherUser: null,
+        errors: []
     }
 
     onChange = (event) => {
@@ -35,12 +36,18 @@ export default class EventForm extends Component {
         })
         .then(r => r.json())
         .then(resObj => {
-            this.props.addEvent(resObj)
-            this.setState({
-                name: "",
-                description: "",
-                time: new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0]
-            })
+            if (resObj.errors) {
+                this.setState({
+                    errors: resObj.errors
+                })
+            } else {
+                this.props.addEvent(resObj)
+                this.setState({
+                    name: "",
+                    description: "",
+                    time: new Date(new Date().toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0]
+                })
+            }
         })
     }
 
@@ -51,6 +58,7 @@ export default class EventForm extends Component {
         })
         return (
             <div className="event-form">
+                {this.state.errors.map(error => <p>{error}</p>)}
                 <h1>Create a New Event</h1>
                 <form onSubmit={this.onSubmit}>
                     <label>Name: </label>
