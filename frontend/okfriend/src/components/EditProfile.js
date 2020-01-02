@@ -15,6 +15,7 @@ export default class EditProfile extends React.Component {
         allParties: ["I don't go to parties.", "I'm always looking for a good time.", "I'm the center of attention.",
             "I'm great at making new friends.", "I love to mingle.", "I'm a wallflower.", "I tend to keep to myself.",
             "I prefer one-on-one interactions."],
+        about_me: "",
         errors: [],
         submitted: false
     }
@@ -31,7 +32,8 @@ export default class EditProfile extends React.Component {
                 gender: resObj.gender,
                 zip_code: resObj.zip_code,
                 parties: resObj.parties,
-                picture: resObj.picture
+                picture: resObj.picture,
+                about_me: resObj.about_me
             })
         })
         
@@ -59,7 +61,8 @@ export default class EditProfile extends React.Component {
                     gender: this.state.gender,
                     zip_code: this.state.zip_code,
                     parties: this.state.parties,
-                    picture: this.state.picture
+                    picture: this.state.picture,
+                    about_me: this.state.about_me
                 }
             })
         })
@@ -124,6 +127,9 @@ export default class EditProfile extends React.Component {
                     <br />
                     <label>Picture: </label>
                     <input onChange={this.onChange} name="picture" type="text" value={this.state.picture}/>
+                    <br />
+                    <label>About Me: </label>
+                    <textarea onChange={this.onChange} name="about_me" value={this.state.about_me} />
                     <br />
                     <button onClick={this.submitClick}>Submit</button>
 

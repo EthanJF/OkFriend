@@ -15,6 +15,7 @@ class Signup extends React.Component {
         allParties: ["I don't go to parties.", "I'm always looking for a good time.", "I'm the center of attention.",
             "I'm great at making new friends.", "I love to mingle.", "I'm a wallflower.", "I tend to keep to myself.",
             "I prefer one-on-one interactions."],
+        about_me: "Write something nice about yourself!",
         errors: []
     }
 
@@ -43,7 +44,8 @@ class Signup extends React.Component {
                     gender: this.state.gender,
                     zip_code: this.state.zip_code,
                     parties: this.state.parties,
-                    picture: this.state.picture
+                    picture: this.state.picture,
+                    about_me: this.state.about_me
                 }
             })
         })

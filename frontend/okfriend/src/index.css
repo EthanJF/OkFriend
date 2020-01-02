@@ -47,6 +47,13 @@ input {
   border: 0.5px solid #233567;
 }
 
+textarea {
+  background-color: #ffdfdf;
+  color: #233567;
+  font-family: 'Poppins', sans-serif;
+  border: 0.5px solid #233567;
+}
+
 select {
     background-color: #ffdfdf;
   color: #233567;

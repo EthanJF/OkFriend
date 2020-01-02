@@ -27,13 +27,13 @@ parties_array = ["I don't go to parties.", "I'm always looking for a good time."
 resulting_users[0..49].each do |user|
     User.create(username: user["login"]["username"], email: user["email"], password: user["login"]["password"], 
     age: rand(25..45), gender: "non-binary", zip_code: resulting_zip_codes.sample["post code"], 
-    parties: parties_array.sample, picture: user["picture"]["large"])
+    parties: parties_array.sample, picture: user["picture"]["large"], about_me: Faker::Hipster.paragraph)
 end
 
 resulting_users[50..resulting_users.length].each do |user|
     User.create(username: user["login"]["username"], email: user["email"], password: user["login"]["password"], 
     age: rand(25..45), gender: user["gender"], zip_code: resulting_zip_codes.sample["post code"], 
-    parties: parties_array.sample, picture: user["picture"]["large"])
+    parties: parties_array.sample, picture: user["picture"]["large"], about_me: Faker::Hipster.paragraph)
 end
 
 interest_names = ["hiking", "reading", "video games", "writing", "coding", "sports", "weight lifting", "crafting", 
