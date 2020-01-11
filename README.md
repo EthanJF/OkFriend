@@ -28,7 +28,7 @@
 <li>
 <p><strong>Option 2</strong></p>
 <ul>
-<li> Clone this repo to your local machine using <code>https://github.com/EthanJF/OkFriend</code></li>
+<li> Clone this repo to your local machine using <a href="https://github.com/EthanJF/OkFriend"><code>https://github.com/EthanJF/OkFriend</code></a></li>
 </ul>
 </li>
 </ul>
