@@ -8,8 +8,23 @@
 <p><strong>Built With:</strong></p>
 <ul>
   <li>React.js</li>
+  <li>Ruby on Rails</li>
+  <li>BCrypt</li>
+  <li>JWT Auth</li>
+  <li>Vanilla CSS</li>
   <li>RandomUser.me</li>
   <li>RestClient</li>
+</ul>
+<hr>
+</hr>
+<h3>Features</h3>
+<ul>
+    <li>Home page with recommended users by distance and interest</li>
+    <li>Personal profile page where you can add a picture, describe yourself, and add interests</li>
+    <li>See other user's profiles where you can friend them and message them</li>
+    <li>A calendar where you can create events with your friends</li>
+    <li>A friends list and chatbox</li>
+    <li>A search feature where you can search by gender, age, distance, and interest</li>
 </ul>
 <hr>
 </hr>
