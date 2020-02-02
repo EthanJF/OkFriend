@@ -12,7 +12,14 @@ class ChatsController < ApplicationController
 
     def create
         chat = Chat.create(chat_params)
-        render json: chat, include: [:user1, :user2, :messages]
+        # render json: chat, include: [:user1, :user2, :messages]
+        if chat.save
+            serialized_data = ActiveModelSerializers::Adapter::Json.new(
+                ChatSerializer.new(chat)
+            ).serializable_hash
+            ActionCable.server.broadcast 'chats_channel', serialized_data
+            head :ok
+        end
     end
 
     def destroy
