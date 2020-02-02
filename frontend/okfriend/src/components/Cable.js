@@ -16,3 +16,5 @@ const Cable = ({ chats, handleReceivedMessage }) => {
         </Fragment>
     );
 };
+
+export default Cable;

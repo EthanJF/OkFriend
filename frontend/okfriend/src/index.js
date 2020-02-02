@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { ActionCableProvider } from 'react-actioncable-provider';
 import './index.css';
 import App from './components/App';
-import registerServiceWorker from './registerServiceWorker';
+import * as serviceWorker from './serviceWorker';
 import { API_WS_ROOT } from './constants';
 import { BrowserRouter as Router } from 'react-router-dom'
 
@@ -15,4 +15,4 @@ ReactDOM.render(
         </Router>
     </ActionCableProvider>, document.getElementById('root'));
 
-registerServiceWorker();
+serviceWorker.register();

@@ -1,7 +1,8 @@
 import React from 'react';
 import { ActionCable } from 'react-actioncable-provider';
 import { API_ROOT } from '../constants';
-import NewChatForm from './NewChatForm';
+// import NewChatForm from './NewChatForm';
+import Chat from './Chat'
 import MessagesArea from './MessagesArea';
 import Cable from './Cable';
 
@@ -54,7 +55,7 @@ class ChatsList extends React.Component {
                 ) : null}
                 <h2>Chats</h2>
                 <ul>{mapChats(chats, this.handleClick)}</ul>
-                <NewChatForm />
+                <Chat />
                 {activeChat ? (
                     <MessagesArea
                         chat={findActiveChat(
@@ -76,4 +77,14 @@ const findActiveChat = (chats, activeChat) => {
     return chats.find(
         chat => chat.id === activeChat
     );
+};
+
+const mapChats = (chats, handleClick) => {
+    return chats.map(chat => {
+        return (
+            <li key={chat.id} onClick={() => handleClick(chat.id)}>
+                Chat with {chat.user1_id.name} and {chat.user2_id.name}
+            </li>
+        );
+    });
 };

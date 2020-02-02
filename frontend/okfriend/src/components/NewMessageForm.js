@@ -41,3 +41,7 @@ class NewMessageForm extends React.Component {
                 </form>
             </div>
         );
+    };
+}
+
+export default NewMessageForm;

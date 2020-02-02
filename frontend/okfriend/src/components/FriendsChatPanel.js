@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Friends from './Friends'
 // import Chat from './Chat'
-import ChatsList from './components/ChatsList';
+import ChatsList from './ChatsList';
 
 export default class FriendsChatPanel extends Component {
     render(){

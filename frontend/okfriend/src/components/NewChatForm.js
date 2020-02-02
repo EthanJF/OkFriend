@@ -3,7 +3,8 @@ import { API_ROOT, HEADERS } from '../constants';
 
 class NewChatForm extends React.Component {
     state = {
-        title: ''
+        user1_id: null,
+        user2_id: null
     };
 
     handleChange = e => {
@@ -36,3 +37,6 @@ class NewChatForm extends React.Component {
             </div>
         );
     };
+}
+
+export default NewChatForm;
