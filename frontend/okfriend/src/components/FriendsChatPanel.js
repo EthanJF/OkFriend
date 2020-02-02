@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Friends from './Friends'
-import Chat from './Chat'
+// import Chat from './Chat'
+import ChatsList from './components/ChatsList';
 
 export default class FriendsChatPanel extends Component {
     render(){
@@ -11,10 +12,11 @@ export default class FriendsChatPanel extends Component {
             <div className="friends-chat-panel">
                 <Friends friends={this.props.friends} userID={this.props.userID} setID={this.props.setID}/>
                 <h1>My Chats</h1>
-                <ul className="chat-list">
+                <ChatsList />
+                {/* <ul className="chat-list">
                  {renderChats.length !== 0 ? renderChats : "You don't have any chats!"}
                 </ul>
-                <Chat username={this.props.username} selectedUserID={this.props.selectedUserID} userID={this.props.userID} allChats={this.props.allChats} addAChat={this.addAChat} thisChat={this.props.thisChat} thisChatMessages={this.props.thisChatMessages} onChatSubmit={this.props.onChatSubmit} message={this.props.message} onMessageChange={this.props.onMessageChange}/>
+                <Chat username={this.props.username} selectedUserID={this.props.selectedUserID} userID={this.props.userID} allChats={this.props.allChats} addAChat={this.addAChat} thisChat={this.props.thisChat} thisChatMessages={this.props.thisChatMessages} onChatSubmit={this.props.onChatSubmit} message={this.props.message} onMessageChange={this.props.onMessageChange}/> */}
             </div>
         )
     }
